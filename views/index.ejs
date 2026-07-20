@@ -1,0 +1,179 @@
+<%- include('partials/header', { title: 'Главная' }) %>
+
+<div class="row">
+    <div class="col-12 text-center mb-4">
+        <h1>🎫 Helpdesk</h1>
+        <p>Система управления IT-заявками</p>
+        <hr>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h5>Всего</h5>
+                <h2 id="total">0</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark">
+            <div class="card-body text-center">
+                <h5>Открытые</h5>
+                <h2 id="open">0</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h5>Решенные</h5>
+                <h2 id="resolved">0</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body text-center">
+                <h5>% Решения</h5>
+                <h2 id="rate">0%</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5>➕ Создать заявку</h5>
+            </div>
+            <div class="card-body">
+                <form id="ticketForm">
+                    <div class="mb-2">
+                        <input type="text" class="form-control" id="title" placeholder="Название" required>
+                    </div>
+                    <div class="mb-2">
+                        <textarea class="form-control" id="desc" rows="2" placeholder="Описание" required></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <select class="form-select" id="category">
+                                <option value="HARDWARE">Оборудование</option>
+                                <option value="SOFTWARE">ПО</option>
+                                <option value="NETWORK">Сеть</option>
+                                <option value="ACCESS">Доступ</option>
+                                <option value="OTHER">Другое</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <select class="form-select" id="priority">
+                                <option value="CRITICAL">Критичный</option>
+                                <option value="HIGH">Высокий</option>
+                                <option value="MEDIUM" selected>Средний</option>
+                                <option value="LOW">Низкий</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Создать</button>
+                </form>
+                <div id="msg" class="mt-2"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h5>📋 Последние заявки</h5>
+            </div>
+            <div class="card-body" id="recent">
+                <p class="text-muted">Загрузка...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Загрузка статистики
+    async function loadStats() {
+        try {
+            const res = await fetch('http://localhost:3000/api/dashboard/stats');
+            const data = await res.json();
+            document.getElementById('total').textContent = data.overview.total || 0;
+            document.getElementById('open').textContent = data.overview.open || 0;
+            document.getElementById('resolved').textContent = data.overview.resolved || 0;
+            document.getElementById('rate').textContent = (data.overview.resolutionRate || 0) + '%';
+        } catch(e) {
+            console.error('Stats error:', e);
+            document.getElementById('total').textContent = '?';
+        }
+    }
+
+    // Загрузка заявок
+    async function loadTickets() {
+        try {
+            const res = await fetch('http://localhost:3000/api/tickets');
+            const tickets = await res.json();
+            const container = document.getElementById('recent');
+            
+            if (!tickets || tickets.length === 0) {
+                container.innerHTML = '<p class="text-muted">Нет заявок</p>';
+                return;
+            }
+            
+            let html = '<ul class="list-unstyled">';
+            tickets.slice(0, 5).forEach(t => {
+                html += `<li class="border-bottom py-2">
+                    <strong>${t.title || 'Без названия'}</strong>
+                    <small class="text-muted d-block">${t.category || 'OTHER'} • ${new Date(t.created_at).toLocaleString()}</small>
+                </li>`;
+            });
+            html += '</ul>';
+            container.innerHTML = html;
+        } catch(e) {
+            console.error('Tickets error:', e);
+            document.getElementById('recent').innerHTML = '<p class="text-danger">Ошибка загрузки</p>';
+        }
+    }
+
+    // Создание заявки
+    document.getElementById('ticketForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('desc').value;
+        const category = document.getElementById('category').value;
+        const priority = document.getElementById('priority').value;
+        const msg = document.getElementById('msg');
+
+        try {
+            const res = await fetch('http://localhost:3000/api/tickets', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, description, category, priority })
+            });
+            
+            const data = await res.json();
+            
+            if (data.id) {
+                msg.innerHTML = '<div class="alert alert-success">✅ Заявка создана!</div>';
+                document.getElementById('ticketForm').reset();
+                loadStats();
+                loadTickets();
+                setTimeout(() => msg.innerHTML = '', 3000);
+            } else {
+                msg.innerHTML = '<div class="alert alert-danger">❌ Ошибка: ' + (data.error || 'Неизвестная ошибка') + '</div>';
+            }
+        } catch(e) {
+            msg.innerHTML = '<div class="alert alert-danger">❌ Ошибка: ' + e.message + '</div>';
+        }
+    });
+
+    // Загрузка при открытии
+    loadStats();
+    loadTickets();
+    setInterval(loadStats, 5000);
+</script>
+
+<%- include('partials/footer') %>

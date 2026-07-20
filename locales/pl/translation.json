@@ -1,0 +1,158 @@
+{
+  "app": {
+    "title": "Helpdesk - System zarządzania zgłoszeniami IT",
+    "subtitle": "Zarządzaj incydentami IT efektywnie",
+    "footer": "Helpdesk API • Node.js + TypeScript + Express + SQLite",
+    "language": "Język"
+  },
+  "nav": {
+    "home": "Strona główna",
+    "tickets": "Zgłoszenia",
+    "dashboard": "Dashboard",
+    "api": "Dokumentacja API",
+    "swagger": "Swagger"
+  },
+  "home": {
+    "title": "🎫 Helpdesk",
+    "subtitle": "System zarządzania zgłoszeniami IT",
+    "stats": {
+      "total": "Wszystkich zgłoszeń",
+      "open": "Otwarte",
+      "inProgress": "W trakcie",
+      "resolved": "Rozwiązane",
+      "closed": "Zamknięte"
+    },
+    "create": {
+      "title": "➕ Utwórz nowe zgłoszenie",
+      "name": "Nazwa zgłoszenia",
+      "namePlaceholder": "Wpisz krótki opis problemu",
+      "description": "Opis problemu",
+      "descriptionPlaceholder": "Szczegółowo opisz problem...",
+      "category": "Kategoria",
+      "priority": "Priorytet",
+      "submit": "📨 Utwórz zgłoszenie",
+      "creating": "⏳ Tworzenie...",
+      "success": "✅ Zgłoszenie utworzone!",
+      "error": "❌ Błąd tworzenia zgłoszenia"
+    },
+    "recent": "📋 Ostatnie zgłoszenia",
+    "noTickets": "📭 Brak zgłoszeń",
+    "loading": "⏳ Ładowanie zgłoszeń...",
+    "refresh": "Odśwież"
+  },
+  "tickets": {
+    "title": "📋 Wszystkie zgłoszenia",
+    "subtitle": "Zarządzanie wszystkimi zgłoszeniami",
+    "total": "Wszystkich zgłoszeń:",
+    "filters": {
+      "status": "Filtruj po statusie",
+      "statusAll": "Wszystkie statusy",
+      "priority": "Filtruj po priorytecie",
+      "priorityAll": "Wszystkie priorytety",
+      "category": "Filtruj po kategorii",
+      "categoryAll": "Wszystkie kategorie",
+      "search": "🔍 Szukaj po tytule lub opisie..."
+    },
+    "status": {
+      "new": "🆕 Nowe",
+      "inProgress": "🔄 W trakcie",
+      "resolved": "✅ Rozwiązane",
+      "closed": "📌 Zamknięte"
+    },
+    "priority": {
+      "critical": "🔴 Krytyczny",
+      "high": "🟠 Wysoki",
+      "medium": "🟡 Średni",
+      "low": "🟢 Niski"
+    },
+    "category": {
+      "hardware": "🖥️ Sprzęt",
+      "software": "💻 Oprogramowanie",
+      "network": "🌐 Sieć",
+      "access": "🔑 Dostęp",
+      "other": "📌 Inne"
+    },
+    "actions": {
+      "startWork": "🚀 Do pracy",
+      "resolve": "✅ Rozwiąż",
+      "close": "📌 Zamknij",
+      "delete": "🗑️ Usuń",
+      "confirmDelete": "Czy na pewno chcesz usunąć zgłoszenie \"{title}\"?",
+      "deleted": "✅ Zgłoszenie usunięte",
+      "statusUpdated": "✅ Status zaktualizowany"
+    },
+    "empty": "📭 Brak zgłoszeń spełniających kryteria",
+    "created": "Utworzono",
+    "noDescription": "Brak opisu"
+  },
+  "dashboard": {
+    "title": "📊 Dashboard",
+    "subtitle": "Analiza i statystyki zgłoszeń",
+    "stats": {
+      "total": "Wszystkich",
+      "open": "Otwarte",
+      "inProgress": "W trakcie",
+      "resolved": "Rozwiązane",
+      "closed": "Zamknięte"
+    },
+    "charts": {
+      "categories": "📊 Rozkład według kategorii",
+      "status": "📈 Rozkład według statusów",
+      "priority": "📊 Rozkład według priorytetów"
+    },
+    "noData": "Brak danych do wyświetlenia"
+  },
+  "api": {
+    "title": "📚 Dokumentacja API",
+    "subtitle": "Pełna dokumentacja wszystkich endpointów API",
+    "description": "Tutaj znajdziesz wszystkie dostępne metody API do interakcji z systemem.",
+    "endpoints": {
+      "health": "Sprawdzenie stanu serwera",
+      "register": "Rejestracja nowego użytkownika",
+      "login": "Logowanie do systemu (otrzymanie tokena JWT)",
+      "tickets": "Pobranie listy wszystkich zgłoszeń",
+      "createTicket": "Utworzenie nowego zgłoszenia",
+      "updateStatus": "Zmiana statusu zgłoszenia",
+      "deleteTicket": "Usunięcie zgłoszenia po ID",
+      "stats": "Pobranie statystyk zgłoszeń",
+      "swagger": "Dokumentacja API Swagger"
+    },
+    "body": {
+      "register": {
+        "email": "Email użytkownika",
+        "password": "Hasło",
+        "name": "Nazwa użytkownika",
+        "department": "Dział"
+      },
+      "login": {
+        "email": "Email użytkownika",
+        "password": "Hasło"
+      },
+      "createTicket": {
+        "title": "Nazwa zgłoszenia",
+        "description": "Opis problemu",
+        "category": "Kategoria (HARDWARE, SOFTWARE, NETWORK, ACCESS, OTHER)",
+        "priority": "Priorytet (CRITICAL, HIGH, MEDIUM, LOW)"
+      },
+      "updateStatus": {
+        "status": "Nowy status (NEW, IN_PROGRESS, RESOLVED, CLOSED)"
+      }
+    }
+  },
+  "common": {
+    "loading": "Ładowanie...",
+    "error": "Wystąpił błąd",
+    "success": "Sukces",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "close": "Zamknij",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "create": "Utwórz",
+    "update": "Aktualizuj",
+    "refresh": "Odśwież",
+    "search": "Szukaj",
+    "noResults": "Nic nie znaleziono",
+    "all": "Wszystkie"
+  }
+}

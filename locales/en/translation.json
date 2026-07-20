@@ -1,0 +1,158 @@
+{
+  "app": {
+    "title": "Helpdesk - IT Ticket Management System",
+    "subtitle": "Manage IT incidents effectively",
+    "footer": "Helpdesk API • Node.js + TypeScript + Express + SQLite",
+    "language": "Language"
+  },
+  "nav": {
+    "home": "Home",
+    "tickets": "Tickets",
+    "dashboard": "Dashboard",
+    "api": "API Documentation",
+    "swagger": "Swagger"
+  },
+  "home": {
+    "title": "🎫 Helpdesk",
+    "subtitle": "IT Ticket Management System",
+    "stats": {
+      "total": "Total Tickets",
+      "open": "Open",
+      "inProgress": "In Progress",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    },
+    "create": {
+      "title": "➕ Create New Ticket",
+      "name": "Ticket Title",
+      "namePlaceholder": "Enter a brief problem summary",
+      "description": "Problem Description",
+      "descriptionPlaceholder": "Describe the problem in detail...",
+      "category": "Category",
+      "priority": "Priority",
+      "submit": "📨 Create Ticket",
+      "creating": "⏳ Creating...",
+      "success": "✅ Ticket created successfully!",
+      "error": "❌ Failed to create ticket"
+    },
+    "recent": "📋 Recent Tickets",
+    "noTickets": "📭 No tickets",
+    "loading": "⏳ Loading tickets...",
+    "refresh": "Refresh"
+  },
+  "tickets": {
+    "title": "📋 All Tickets",
+    "subtitle": "Manage all tickets in the system",
+    "total": "Total tickets:",
+    "filters": {
+      "status": "Filter by Status",
+      "statusAll": "All Statuses",
+      "priority": "Filter by Priority",
+      "priorityAll": "All Priorities",
+      "category": "Filter by Category",
+      "categoryAll": "All Categories",
+      "search": "🔍 Search by title or description..."
+    },
+    "status": {
+      "new": "🆕 New",
+      "inProgress": "🔄 In Progress",
+      "resolved": "✅ Resolved",
+      "closed": "📌 Closed"
+    },
+    "priority": {
+      "critical": "🔴 Critical",
+      "high": "🟠 High",
+      "medium": "🟡 Medium",
+      "low": "🟢 Low"
+    },
+    "category": {
+      "hardware": "🖥️ Hardware",
+      "software": "💻 Software",
+      "network": "🌐 Network",
+      "access": "🔑 Access",
+      "other": "📌 Other"
+    },
+    "actions": {
+      "startWork": "🚀 Start Work",
+      "resolve": "✅ Resolve",
+      "close": "📌 Close",
+      "delete": "🗑️ Delete",
+      "confirmDelete": "Are you sure you want to delete ticket \"{title}\"?",
+      "deleted": "✅ Ticket deleted",
+      "statusUpdated": "✅ Status updated"
+    },
+    "empty": "📭 No tickets match the filters",
+    "created": "Created",
+    "noDescription": "No description"
+  },
+  "dashboard": {
+    "title": "📊 Dashboard",
+    "subtitle": "Analytics and ticket statistics",
+    "stats": {
+      "total": "Total",
+      "open": "Open",
+      "inProgress": "In Progress",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    },
+    "charts": {
+      "categories": "📊 Distribution by Category",
+      "status": "📈 Distribution by Status",
+      "priority": "📊 Distribution by Priority"
+    },
+    "noData": "No data to display"
+  },
+  "api": {
+    "title": "📚 API Documentation",
+    "subtitle": "Complete documentation of all API endpoints",
+    "description": "Here you can find all available API methods to interact with the system.",
+    "endpoints": {
+      "health": "Server health check",
+      "register": "Register a new user",
+      "login": "Login to system (get JWT token)",
+      "tickets": "Get list of all tickets",
+      "createTicket": "Create a new ticket",
+      "updateStatus": "Update ticket status",
+      "deleteTicket": "Delete ticket by ID",
+      "stats": "Get ticket statistics",
+      "swagger": "Swagger API documentation"
+    },
+    "body": {
+      "register": {
+        "email": "User email",
+        "password": "Password",
+        "name": "User name",
+        "department": "Department"
+      },
+      "login": {
+        "email": "User email",
+        "password": "Password"
+      },
+      "createTicket": {
+        "title": "Ticket title",
+        "description": "Problem description",
+        "category": "Category (HARDWARE, SOFTWARE, NETWORK, ACCESS, OTHER)",
+        "priority": "Priority (CRITICAL, HIGH, MEDIUM, LOW)"
+      },
+      "updateStatus": {
+        "status": "New status (NEW, IN_PROGRESS, RESOLVED, CLOSED)"
+      }
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "update": "Update",
+    "refresh": "Refresh",
+    "search": "Search",
+    "noResults": "No results found",
+    "all": "All"
+  }
+}

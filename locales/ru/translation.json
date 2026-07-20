@@ -1,0 +1,158 @@
+{
+  "app": {
+    "title": "Helpdesk - Система управления IT-заявками",
+    "subtitle": "Управляйте IT-инцидентами эффективно",
+    "footer": "Helpdesk API • Node.js + TypeScript + Express + SQLite",
+    "language": "Язык"
+  },
+  "nav": {
+    "home": "Главная",
+    "tickets": "Заявки",
+    "dashboard": "Дашборд",
+    "api": "API Документация",
+    "swagger": "Swagger"
+  },
+  "home": {
+    "title": "🎫 Helpdesk",
+    "subtitle": "Система управления IT-заявками",
+    "stats": {
+      "total": "Всего заявок",
+      "open": "Открытые",
+      "inProgress": "В процессе",
+      "resolved": "Решенные",
+      "closed": "Закрытые"
+    },
+    "create": {
+      "title": "➕ Создать новую заявку",
+      "name": "Название заявки",
+      "namePlaceholder": "Введите краткое название проблемы",
+      "description": "Описание проблемы",
+      "descriptionPlaceholder": "Подробно опишите проблему...",
+      "category": "Категория",
+      "priority": "Приоритет",
+      "submit": "📨 Создать заявку",
+      "creating": "⏳ Создание...",
+      "success": "✅ Заявка успешно создана!",
+      "error": "❌ Ошибка создания заявки"
+    },
+    "recent": "📋 Последние заявки",
+    "noTickets": "📭 Нет заявок",
+    "loading": "⏳ Загрузка заявок...",
+    "refresh": "Обновить"
+  },
+  "tickets": {
+    "title": "📋 Все заявки",
+    "subtitle": "Управление всеми заявками в системе",
+    "total": "Всего заявок:",
+    "filters": {
+      "status": "Фильтр по статусу",
+      "statusAll": "Все статусы",
+      "priority": "Фильтр по приоритету",
+      "priorityAll": "Все приоритеты",
+      "category": "Фильтр по категории",
+      "categoryAll": "Все категории",
+      "search": "🔍 Поиск по названию или описанию..."
+    },
+    "status": {
+      "new": "🆕 Новая",
+      "inProgress": "🔄 В процессе",
+      "resolved": "✅ Решена",
+      "closed": "📌 Закрыта"
+    },
+    "priority": {
+      "critical": "🔴 Критичный",
+      "high": "🟠 Высокий",
+      "medium": "🟡 Средний",
+      "low": "🟢 Низкий"
+    },
+    "category": {
+      "hardware": "🖥️ Оборудование",
+      "software": "💻 Программное обеспечение",
+      "network": "🌐 Сеть",
+      "access": "🔑 Доступ",
+      "other": "📌 Другое"
+    },
+    "actions": {
+      "startWork": "🚀 В работу",
+      "resolve": "✅ Решить",
+      "close": "📌 Закрыть",
+      "delete": "🗑️ Удалить",
+      "confirmDelete": "Вы уверены, что хотите удалить заявку \"{title}\"?",
+      "deleted": "✅ Заявка удалена",
+      "statusUpdated": "✅ Статус обновлен"
+    },
+    "empty": "📭 Нет заявок соответствующих фильтрам",
+    "created": "Создана",
+    "noDescription": "Описание отсутствует"
+  },
+  "dashboard": {
+    "title": "📊 Дашборд",
+    "subtitle": "Аналитика и статистика по заявкам",
+    "stats": {
+      "total": "Всего",
+      "open": "Открытые",
+      "inProgress": "В процессе",
+      "resolved": "Решенные",
+      "closed": "Закрытые"
+    },
+    "charts": {
+      "categories": "📊 Распределение по категориям",
+      "status": "📈 Распределение по статусам",
+      "priority": "📊 Распределение по приоритетам"
+    },
+    "noData": "Нет данных для отображения"
+  },
+  "api": {
+    "title": "📚 API Документация",
+    "subtitle": "Полная документация всех API эндпоинтов",
+    "description": "Здесь представлены все доступные API методы для взаимодействия с системой.",
+    "endpoints": {
+      "health": "Проверка работоспособности сервера",
+      "register": "Регистрация нового пользователя",
+      "login": "Вход в систему (получение JWT токена)",
+      "tickets": "Получение списка всех заявок",
+      "createTicket": "Создание новой заявки",
+      "updateStatus": "Изменение статуса заявки",
+      "deleteTicket": "Удаление заявки по ID",
+      "stats": "Получение статистики по заявкам",
+      "swagger": "Swagger документация API"
+    },
+    "body": {
+      "register": {
+        "email": "Email пользователя",
+        "password": "Пароль",
+        "name": "Имя пользователя",
+        "department": "Отдел"
+      },
+      "login": {
+        "email": "Email пользователя",
+        "password": "Пароль"
+      },
+      "createTicket": {
+        "title": "Название заявки",
+        "description": "Описание проблемы",
+        "category": "Категория (HARDWARE, SOFTWARE, NETWORK, ACCESS, OTHER)",
+        "priority": "Приоритет (CRITICAL, HIGH, MEDIUM, LOW)"
+      },
+      "updateStatus": {
+        "status": "Новый статус (NEW, IN_PROGRESS, RESOLVED, CLOSED)"
+      }
+    }
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Произошла ошибка",
+    "success": "Успешно",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "close": "Закрыть",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "create": "Создать",
+    "update": "Обновить",
+    "refresh": "Обновить",
+    "search": "Поиск",
+    "noResults": "Ничего не найдено",
+    "all": "Все"
+  }
+}

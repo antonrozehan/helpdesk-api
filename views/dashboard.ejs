@@ -1,0 +1,181 @@
+<%- include('partials/header', { title: 'Дашборд' }) %>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h1><i class="bi bi-bar-chart text-primary"></i> Дашборд</h1>
+        <p class="text-muted">Статистика по заявкам в реальном времени</p>
+        <hr>
+    </div>
+</div>
+
+<div class="row mb-4" id="statsCards">
+    <div class="col-md-3 col-6">
+        <div class="card bg-primary text-white shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title">Всего заявок</h5>
+                <h2 class="display-4" id="dashTotal">0</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card bg-warning text-dark shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title">Открытые</h5>
+                <h2 class="display-4" id="dashOpen">0</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card bg-success text-white shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title">Решенные</h5>
+                <h2 class="display-4" id="dashResolved">0</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card bg-info text-white shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title">% Решения</h5>
+                <h2 class="display-4" id="dashRate">0%</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="bi bi-pie-chart"></i> По категориям</h5>
+            </div>
+            <div class="card-body" id="categoryStats">
+                <div class="text-center py-3 text-muted">Нет данных</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="bi bi-bar-chart"></i> По приоритетам</h5>
+            </div>
+            <div class="card-body" id="priorityStats">
+                <div class="text-center py-3 text-muted">Нет данных</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function loadDashboard() {
+        try {
+            const res = await fetch('/api/dashboard/stats');
+            const data = await res.json();
+            
+            document.getElementById('dashTotal').textContent = data.overview.total || 0;
+            document.getElementById('dashOpen').textContent = data.overview.open || 0;
+            document.getElementById('dashResolved').textContent = data.overview.resolved || 0;
+            document.getElementById('dashRate').textContent = (data.overview.resolutionRate || 0) + '%';
+        } catch(e) {
+            console.error('Stats error:', e);
+        }
+
+        try {
+            const res = await fetch('/api/tickets');
+            const tickets = await res.json();
+            
+            if (!tickets || tickets.length === 0) {
+                document.getElementById('categoryStats').innerHTML = '<div class="text-center text-muted">Нет данных</div>';
+                document.getElementById('priorityStats').innerHTML = '<div class="text-center text-muted">Нет данных</div>';
+                return;
+            }
+            
+            // По категориям
+            const categories = {};
+            tickets.forEach(t => {
+                categories[t.category] = (categories[t.category] || 0) + 1;
+            });
+            
+            const categoryColors = {
+                'HARDWARE': 'primary',
+                'SOFTWARE': 'success',
+                'NETWORK': 'info',
+                'ACCESS': 'warning',
+                'OTHER': 'secondary'
+            };
+            
+            const catNames = {
+                'HARDWARE': '🖥️ Оборудование',
+                'SOFTWARE': '💻 ПО',
+                'NETWORK': '🌐 Сеть',
+                'ACCESS': '🔑 Доступ',
+                'OTHER': '📌 Другое'
+            };
+            
+            let catHtml = '';
+            const total = tickets.length;
+            for (const [key, value] of Object.entries(categories)) {
+                const percent = Math.round(value / total * 100);
+                catHtml += `
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between">
+                            <span>${catNames[key] || key}</span>
+                            <span>${value} (${percent}%)</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-${categoryColors[key] || 'secondary'}" 
+                                 style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('categoryStats').innerHTML = catHtml || 'Нет данных';
+            
+            // По приоритетам
+            const priorities = {};
+            tickets.forEach(t => {
+                priorities[t.priority] = (priorities[t.priority] || 0) + 1;
+            });
+            
+            const priorityColors = {
+                'CRITICAL': 'danger',
+                'HIGH': 'warning',
+                'MEDIUM': 'info',
+                'LOW': 'success'
+            };
+            
+            const priorityNames = {
+                'CRITICAL': '🔴 Критичный',
+                'HIGH': '🟠 Высокий',
+                'MEDIUM': '🟡 Средний',
+                'LOW': '🟢 Низкий'
+            };
+            
+            let priHtml = '';
+            for (const [key, value] of Object.entries(priorities)) {
+                const percent = Math.round(value / total * 100);
+                priHtml += `
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between">
+                            <span>${priorityNames[key] || key}</span>
+                            <span>${value} (${percent}%)</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-${priorityColors[key] || 'secondary'}" 
+                                 style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('priorityStats').innerHTML = priHtml || 'Нет данных';
+            
+        } catch(e) {
+            console.error('Tickets error:', e);
+        }
+    }
+
+    loadDashboard();
+    setInterval(loadDashboard, 5000);
+</script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,198 @@
+<%- include('partials/header', { title: 'Все заявки' }) %>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h1><i class="bi bi-list-task text-primary"></i> Все заявки</h1>
+        <p class="text-muted">Список всех заявок в системе</p>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-funnel"></i> Фильтры</h5>
+                <button class="btn btn-outline-light btn-sm" onclick="loadTickets()">
+                    <i class="bi bi-arrow-clockwise"></i> Обновить
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <select class="form-select" id="filterStatus" onchange="loadTickets()">
+                            <option value="">Все статусы</option>
+                            <option value="NEW">Новые</option>
+                            <option value="IN_PROGRESS">В работе</option>
+                            <option value="ON_REVIEW">На проверке</option>
+                            <option value="RESOLVED">Решенные</option>
+                            <option value="CLOSED">Закрытые</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="filterPriority" onchange="loadTickets()">
+                            <option value="">Все приоритеты</option>
+                            <option value="CRITICAL">Критичный</option>
+                            <option value="HIGH">Высокий</option>
+                            <option value="MEDIUM">Средний</option>
+                            <option value="LOW">Низкий</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="filterCategory" onchange="loadTickets()">
+                            <option value="">Все категории</option>
+                            <option value="HARDWARE">Оборудование</option>
+                            <option value="SOFTWARE">ПО</option>
+                            <option value="NETWORK">Сеть</option>
+                            <option value="ACCESS">Доступ</option>
+                            <option value="OTHER">Другое</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" id="filterSearch" placeholder="🔍 Поиск..." oninput="loadTickets()">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div id="ticketsList">
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Загрузка...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function loadTickets() {
+        const status = document.getElementById('filterStatus').value;
+        const priority = document.getElementById('filterPriority').value;
+        const category = document.getElementById('filterCategory').value;
+        const search = document.getElementById('filterSearch').value.toLowerCase();
+
+        try {
+            const res = await fetch('/api/tickets');
+            let tickets = await res.json();
+
+            if (!tickets || tickets.length === 0) {
+                document.getElementById('ticketsList').innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="bi bi-inbox display-1 text-muted"></i>
+                        <h3 class="text-muted">Нет заявок</h3>
+                        <p class="text-muted">Создайте первую заявку на главной странице</p>
+                        <a href="/" class="btn btn-primary">Создать заявку</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Фильтрация
+            if (status) tickets = tickets.filter(t => t.status === status);
+            if (priority) tickets = tickets.filter(t => t.priority === priority);
+            if (category) tickets = tickets.filter(t => t.category === category);
+            if (search) tickets = tickets.filter(t => 
+                (t.title || '').toLowerCase().includes(search) || 
+                (t.description || '').toLowerCase().includes(search)
+            );
+
+            const container = document.getElementById('ticketsList');
+            
+            if (tickets.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="bi bi-search display-1 text-muted"></i>
+                        <h3 class="text-muted">Ничего не найдено</h3>
+                        <p class="text-muted">Попробуйте изменить фильтры</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="row">';
+            tickets.forEach(t => {
+                const priorityColor = {
+                    'CRITICAL': 'danger',
+                    'HIGH': 'warning',
+                    'MEDIUM': 'info',
+                    'LOW': 'success'
+                }[t.priority] || 'secondary';
+
+                const statusColor = {
+                    'NEW': 'primary',
+                    'IN_PROGRESS': 'warning',
+                    'ON_REVIEW': 'info',
+                    'RESOLVED': 'success',
+                    'CLOSED': 'secondary'
+                }[t.status] || 'secondary';
+
+                const statusLabel = {
+                    'NEW': 'Новая',
+                    'IN_PROGRESS': 'В работе',
+                    'ON_REVIEW': 'На проверке',
+                    'RESOLVED': 'Решена',
+                    'CLOSED': 'Закрыта'
+                }[t.status] || t.status;
+
+                const categoryIcons = {
+                    'HARDWARE': '🖥️',
+                    'SOFTWARE': '💻',
+                    'NETWORK': '🌐',
+                    'ACCESS': '🔑',
+                    'OTHER': '📌'
+                };
+
+                html += `
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100 shadow-sm ticket-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-${priorityColor}">${t.priority || 'LOW'}</span>
+                                    <span class="badge bg-${statusColor}">${statusLabel}</span>
+                                </div>
+                                <h5 class="card-title">${t.title || 'Без названия'}</h5>
+                                <p class="card-text text-muted small">${(t.description || '').substring(0, 100)}${(t.description || '').length > 100 ? '...' : ''}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <small class="text-muted">
+                                        ${categoryIcons[t.category] || '📌'} ${t.category || 'OTHER'}
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="bi bi-clock"></i>
+                                        ${new Date(t.created_at).toLocaleDateString()}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        } catch(e) {
+            console.error('Error:', e);
+            document.getElementById('ticketsList').innerHTML = 
+                '<div class="alert alert-danger">Ошибка загрузки заявок</div>';
+        }
+    }
+
+    // Загрузка при открытии
+    loadTickets();
+</script>
+
+<style>
+    .ticket-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+    }
+    .ticket-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+</style>
+
+<%- include('partials/footer') %>
