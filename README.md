@@ -73,15 +73,9 @@ Helpdesk API provides:
 
 ---
 
-## API
-
-![API](screenshots/4.png)
-
----
-
 ## Swagger
 
-![Swagger](screenshots/5.png)
+![Swagger](screenshots/4.png)
 
 ---
 
